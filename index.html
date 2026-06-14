@@ -1,0 +1,1291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Amr Magdy — 2 Years of Salesforce Excellence · CCS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+
+/* ╔════════════════════════════════════════════╗
+   ║  SLDS2 DESIGN SYSTEM TOKENS               ║
+   ╚════════════════════════════════════════════╝ */
+:root {
+  --navy:       #001a3e;
+  --navy-mid:   #032D60;
+  --blue:       #0176D3;
+  --cloud:      #00A1E0;
+  --sky:        #1B96FF;
+  --white:      #ffffff;
+  --text:       rgba(255,255,255,0.88);
+  --muted:      rgba(255,255,255,0.45);
+  --card:       rgba(255,255,255,0.055);
+  --card-h:     rgba(255,255,255,0.09);
+  --border:     rgba(255,255,255,0.1);
+  --glow:       rgba(1,118,211,0.35);
+  --transition: .65s cubic-bezier(.4,0,.2,1);
+}
+
+*,*::before,*::after { margin:0; padding:0; box-sizing:border-box; }
+
+html,body {
+  width:100vw; height:100vh;
+  overflow:hidden;
+  font-family:'Inter',system-ui,sans-serif;
+  background:var(--navy);
+  color:var(--white);
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ─── BACKGROUND GRID ─── */
+body::before {
+  content:'';
+  position:fixed; inset:0;
+  background-image:
+    linear-gradient(rgba(1,118,211,.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(1,118,211,.035) 1px, transparent 1px);
+  background-size:64px 64px;
+  pointer-events:none;
+  z-index:0;
+}
+
+/* ─── PROGRESS BAR ─── */
+#progress {
+  position:fixed; top:0; left:0;
+  height:3px;
+  background:linear-gradient(90deg, var(--blue), var(--cloud));
+  z-index:200;
+  box-shadow:0 0 12px var(--glow);
+  transition:width .5s ease;
+}
+
+/* ─── WATERMARK ─── */
+#wm {
+  position:fixed; top:22px; right:28px;
+  z-index:150;
+  display:flex; align-items:center; gap:8px;
+  font-size:12px; font-weight:600;
+  color:rgba(255,255,255,.18);
+  user-select:none;
+}
+.wm-dot { width:7px; height:7px; border-radius:50%; background:var(--blue); opacity:.4; }
+
+/* ─── DECK ─── */
+#deck { position:fixed; inset:0; z-index:1; }
+
+/* ─── SLIDES ─── */
+.slide {
+  position:absolute; inset:0;
+  display:flex; align-items:center; justify-content:center;
+  padding:56px 80px;
+  opacity:0;
+  transform:translateY(28px);
+  pointer-events:none;
+  transition:opacity var(--transition), transform var(--transition);
+  will-change:opacity,transform;
+}
+.slide.active  { opacity:1; transform:translateY(0); pointer-events:all; }
+.slide.leaving { opacity:0; transform:translateY(-20px); }
+
+.inner {
+  width:100%; max-width:1440px;
+  height:100%;
+  display:flex; flex-direction:column; justify-content:center;
+}
+
+/* ─── TYPE ─── */
+.eyebrow {
+  font-size:11px; font-weight:600;
+  letter-spacing:3.5px; text-transform:uppercase;
+  color:var(--cloud); margin-bottom:14px;
+}
+.h1 {
+  font-size:clamp(1.9rem,3.8vw,3.2rem);
+  font-weight:900; letter-spacing:-.035em; line-height:1.1;
+  margin-bottom:14px;
+}
+.sub {
+  font-size:clamp(.9rem,1.3vw,1.1rem);
+  font-weight:400; color:var(--muted);
+  line-height:1.6; margin-bottom:40px;
+}
+.accent  { color:var(--cloud); }
+.accentB { color:var(--sky); }
+
+/* ─── STAT NUMBER (gradient text) ─── */
+.num {
+  font-size:clamp(2.2rem,4.5vw,4rem);
+  font-weight:900; letter-spacing:-.045em; line-height:1;
+  background:linear-gradient(135deg,#fff 10%,var(--cloud) 100%);
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.lbl {
+  font-size:11px; font-weight:600;
+  text-transform:uppercase; letter-spacing:2px;
+  color:var(--muted); margin-top:8px;
+}
+.desc {
+  font-size:13px; color:rgba(255,255,255,.6);
+  line-height:1.6; margin-top:10px;
+}
+
+/* ─── CARDS ─── */
+.card {
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:16px; padding:26px 28px;
+  transition:background .25s, border-color .25s, transform .25s;
+  position:relative; overflow:hidden;
+}
+.card::before {
+  content:''; position:absolute;
+  top:0; left:0; right:0; height:2px;
+  background:linear-gradient(90deg,var(--blue),var(--cloud));
+  opacity:0; transition:opacity .25s;
+}
+.card:hover { background:var(--card-h); border-color:rgba(1,118,211,.4); transform:translateY(-2px); }
+.card:hover::before { opacity:1; }
+
+.card-top-blue  { border-top:3px solid var(--blue); }
+.card-top-cloud { border-top:3px solid var(--cloud); }
+.card-top-sky   { border-top:3px solid var(--sky); }
+.card-top-green { border-top:3px solid #34d399; }
+.card-top-amber { border-top:3px solid #f59e0b; }
+.card-top-violet{ border-top:3px solid #a78bfa; }
+.card-left-blue  { border-left:4px solid var(--blue); }
+.card-left-cloud { border-left:4px solid var(--cloud); }
+.card-left-amber { border-left:4px solid #f59e0b; }
+.card-left-green { border-left:4px solid #34d399; }
+.card-left-sky   { border-left:4px solid var(--sky); }
+
+/* ─── GRIDS ─── */
+.g2 { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+.g3 { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
+.g4 { display:grid; grid-template-columns:repeat(4,1fr); gap:18px; }
+.g5 { display:grid; grid-template-columns:repeat(5,1fr); gap:16px; }
+.g21{ display:grid; grid-template-columns:2fr 1.1fr; gap:32px; align-items:start; }
+.g12{ display:grid; grid-template-columns:1fr 1.6fr; gap:32px; align-items:center; }
+
+/* ─── PILLS ─── */
+.pill {
+  display:inline-flex; align-items:center; gap:5px;
+  padding:5px 14px; border-radius:100px;
+  font-size:12px; font-weight:600; letter-spacing:.3px;
+}
+.p-blue  { background:rgba(1,118,211,.18); border:1px solid rgba(1,118,211,.4); color:var(--sky); }
+.p-cloud { background:rgba(0,161,224,.14); border:1px solid rgba(0,161,224,.3); color:var(--cloud); }
+.p-green { background:rgba(52,211,153,.14); border:1px solid rgba(52,211,153,.3); color:#34d399; }
+
+/* ─── DIVIDER ─── */
+.divider { width:56px; height:3px; background:linear-gradient(90deg,var(--blue),var(--cloud)); border-radius:2px; margin-bottom:28px; }
+
+/* ─── ANIMATIONS (stagger on active) ─── */
+@keyframes fadeUp   { from{opacity:0;transform:translateY(22px)} to{opacity:1;transform:none} }
+@keyframes fadeIn   { from{opacity:0} to{opacity:1} }
+@keyframes scaleIn  { from{opacity:0;transform:scale(.93)} to{opacity:1;transform:scale(1)} }
+
+.slide.active .a1 { animation:fadeUp .5s .08s both; }
+.slide.active .a2 { animation:fadeUp .5s .18s both; }
+.slide.active .a3 { animation:fadeUp .5s .28s both; }
+.slide.active .a4 { animation:fadeUp .5s .38s both; }
+.slide.active .a5 { animation:fadeUp .5s .48s both; }
+.slide.active .a6 { animation:fadeUp .5s .58s both; }
+
+/* ─── NAVIGATION ─── */
+#nav {
+  position:fixed; bottom:32px; left:50%;
+  transform:translateX(-50%);
+  z-index:150;
+  display:flex; align-items:center; gap:14px;
+}
+.nbtn {
+  width:42px; height:42px; border-radius:50%;
+  background:rgba(255,255,255,.07);
+  border:1px solid var(--border);
+  color:var(--white); font-size:16px;
+  cursor:pointer;
+  display:flex; align-items:center; justify-content:center;
+  transition:background .2s, border-color .2s;
+  user-select:none;
+}
+.nbtn:hover { background:var(--blue); border-color:var(--blue); }
+#dots { display:flex; gap:7px; }
+.dot {
+  width:6px; height:6px; border-radius:50%;
+  background:rgba(255,255,255,.22);
+  cursor:pointer; transition:all .3s;
+}
+.dot.on { background:var(--cloud); width:22px; border-radius:3px; }
+#sc { font-size:12px; color:var(--muted); min-width:38px; text-align:center; }
+
+/* ═══════════════════════════════════════════════════
+   SLIDE-SPECIFIC STYLES
+═══════════════════════════════════════════════════ */
+
+/* SLIDE 1 — COVER */
+#s1 {
+  background:
+    radial-gradient(ellipse at 72% 48%, rgba(1,118,211,.16) 0%, transparent 55%),
+    radial-gradient(ellipse at 18% 78%, rgba(0,161,224,.09) 0%, transparent 48%),
+    linear-gradient(140deg, var(--navy) 0%, var(--navy-mid) 100%);
+}
+#s1 .inner { display:grid; grid-template-columns:1.15fr 1fr; gap:60px; align-items:center; height:auto; }
+
+.cover-badge {
+  display:inline-flex; align-items:center; gap:7px;
+  background:rgba(0,161,224,.13); border:1px solid rgba(0,161,224,.28);
+  border-radius:100px; padding:7px 18px;
+  font-size:12.5px; font-weight:600; color:var(--cloud);
+  margin-bottom:26px;
+}
+.cover-name {
+  font-size:clamp(3rem,6.5vw,5.8rem);
+  font-weight:900; letter-spacing:-.045em; line-height:.93;
+  margin-bottom:22px;
+}
+.cover-name span:first-child { display:block; color:var(--white); }
+.cover-name span:last-child  {
+  display:block;
+  background:linear-gradient(135deg,#fff 0%,var(--cloud) 70%);
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.cover-role { font-size:17px; font-weight:400; color:var(--muted); margin-bottom:32px; line-height:1.5; }
+.cover-tags { display:flex; flex-wrap:wrap; gap:10px; margin-bottom:36px; }
+.tag { padding:7px 15px; border-radius:8px; font-size:12.5px; font-weight:600; background:rgba(255,255,255,.07); border:1px solid var(--border); color:var(--text); }
+
+.cover-stats {
+  display:grid; grid-template-columns:repeat(3,1fr);
+  gap:1px; background:var(--border);
+  border-radius:14px; overflow:hidden;
+  border:1px solid var(--border);
+}
+.cs-item { background:rgba(255,255,255,.04); padding:20px 16px; text-align:center; }
+.cs-num  { font-size:1.85rem; font-weight:900; letter-spacing:-.03em; background:linear-gradient(135deg,#fff,var(--cloud)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+.cs-lbl  { font-size:10.5px; color:var(--muted); text-transform:uppercase; letter-spacing:1.8px; margin-top:5px; }
+
+/* SVG ring */
+#ring-svg { display:block; }
+
+/* SLIDE 3 — AUTOMATION: mini bars */
+.bars { display:flex; align-items:flex-end; gap:3px; height:56px; margin-top:14px; }
+.bar  { flex:1; border-radius:2px 2px 0 0; background:linear-gradient(to top,var(--blue),var(--cloud)); }
+.bar-axis { display:flex; justify-content:space-between; margin-top:6px; font-size:11px; color:var(--muted); }
+
+/* SLIDE 4 — LEAD PIPELINE: flow */
+.flow { display:flex; align-items:stretch; gap:0; margin-top:36px; }
+.fi   { flex:1; border:1px solid var(--border); padding:22px 18px; text-align:center; background:var(--card); }
+.fi:first-child { border-radius:12px 0 0 12px; }
+.fi:last-child  { border-radius:0 12px 12px 0; }
+.fi-blue  { background:rgba(1,118,211,.1); border-color:rgba(1,118,211,.3); }
+.fi-cloud { background:rgba(0,161,224,.09); border-color:rgba(0,161,224,.28); }
+.fi-green { background:rgba(52,211,153,.07); border-color:rgba(52,211,153,.28); }
+.farrow { flex-shrink:0; width:32px; display:flex; align-items:center; justify-content:center; color:var(--blue); font-size:18px; background:rgba(1,118,211,.06); border-top:1px solid var(--border); border-bottom:1px solid var(--border); }
+.fi-icon { font-size:1.8rem; margin-bottom:10px; }
+.fi-num  { font-size:1.7rem; font-weight:900; letter-spacing:-.03em; }
+.fi-sub  { font-size:10.5px; text-transform:uppercase; letter-spacing:1.5px; color:var(--muted); margin-top:5px; }
+.fi-txt  { font-size:12px; color:rgba(255,255,255,.55); margin-top:10px; line-height:1.5; }
+
+/* SLIDE 5 — TRANSACTION TIMELINE */
+.timeline { display:flex; align-items:center; gap:0; padding:22px 28px; background:var(--card); border:1px solid var(--border); border-radius:14px; margin-top:24px; overflow-x:auto; }
+.ts { flex-shrink:0; text-align:center; }
+.ts-circle { width:34px; height:34px; border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto; font-size:12px; font-weight:700; color:var(--white); }
+.ts-lbl { font-size:10px; color:var(--muted); margin-top:7px; max-width:68px; line-height:1.4; }
+.ts-line { flex:1; height:2px; background:linear-gradient(90deg,rgba(1,118,211,.5),rgba(0,161,224,.25)); margin-bottom:20px; min-width:18px; }
+
+/* SLIDE 7 — INTEGRATIONS */
+.int-card { background:var(--card); border:1px solid var(--border); border-radius:16px; padding:24px 20px; transition:all .25s; position:relative; overflow:hidden; }
+.int-card::after { content:''; position:absolute; bottom:0; left:0; right:0; height:2px; background:linear-gradient(90deg,var(--blue),var(--cloud)); opacity:0; transition:opacity .25s; }
+.int-card:hover { background:var(--card-h); border-color:rgba(0,161,224,.35); transform:translateY(-3px); }
+.int-card:hover::after { opacity:1; }
+.int-icon { font-size:30px; margin-bottom:12px; }
+.int-name { font-size:14px; font-weight:800; margin-bottom:8px; }
+.int-met  { font-size:20px; font-weight:900; color:var(--cloud); margin-bottom:6px; letter-spacing:-.02em; }
+.int-desc { font-size:12px; color:var(--muted); line-height:1.55; }
+
+/* SLIDE 9 — DONUT */
+#donut-wrap { position:relative; width:230px; height:230px; flex-shrink:0; }
+#donut-overlay { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; }
+#d-pct { font-size:3.2rem; font-weight:900; letter-spacing:-.04em; line-height:1; background:linear-gradient(135deg,#fff,var(--cloud)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+#d-sub { font-size:11px; text-transform:uppercase; letter-spacing:1.8px; color:var(--muted); margin-top:3px; }
+
+/* SLIDE 11 — CONNECT */
+#s11 {
+  background:
+    radial-gradient(ellipse at 50% 45%, rgba(1,118,211,.22) 0%, transparent 65%),
+    linear-gradient(140deg,var(--navy) 0%,var(--navy-mid) 100%);
+}
+#s11 .inner { display:grid; grid-template-columns:1.1fr 1fr; gap:56px; align-items:center; height:auto; }
+
+.contact-row {
+  display:flex; align-items:center; gap:16px;
+  padding:15px 22px; background:var(--card);
+  border:1px solid var(--border); border-radius:12px;
+  margin-bottom:14px;
+}
+.contact-icon { font-size:18px; width:28px; flex-shrink:0; }
+.contact-main { font-size:14px; font-weight:700; }
+.contact-sub  { font-size:12px; color:var(--muted); margin-top:2px; }
+
+</style>
+</head>
+<body>
+
+<div id="progress"></div>
+<div id="wm"><div class="wm-dot"></div>Central City Solutions · Salesforce</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DECK
+═════════════════════════════════════════════════════ -->
+<div id="deck">
+
+<!-- ────────────────────────────────────────────────────
+     SLIDE 1 · COVER
+──────────────────────────────────────────────────── -->
+<div class="slide active" id="s1">
+  <div class="inner">
+
+    <!-- LEFT COLUMN -->
+    <div>
+      <div class="cover-badge a1">🎉 &nbsp; 2-Year Anniversary &nbsp;·&nbsp; June 2026</div>
+
+      <div class="cover-name a2">
+        <span>Amr</span>
+        <span>Magdy</span>
+      </div>
+
+      <div class="cover-role a3">
+        Salesforce Consultant &amp; Developer<br>
+        <span style="color:var(--cloud)">Central City Solutions</span>
+      </div>
+
+      <div class="cover-tags a4">
+        <span class="tag">June 2024 – June 2026</span>
+        <span class="tag">Columbus &amp; Cincinnati, OH</span>
+        <span class="tag">32 Active Users</span>
+      </div>
+
+      <div class="cover-stats a5">
+        <div class="cs-item">
+          <div class="cs-num" data-count="868251" data-fmt="868K">868K</div>
+          <div class="cs-lbl">Automated Activities</div>
+        </div>
+        <div class="cs-item">
+          <div class="cs-num" data-count="60699" data-fmt="60,699">60,699</div>
+          <div class="cs-lbl">Buyer Records</div>
+        </div>
+        <div class="cs-item">
+          <div class="cs-num" data-count="530" data-fmt="530">530</div>
+          <div class="cs-lbl">Transactions</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT COLUMN — animated SVG ring -->
+    <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;" class="a6">
+      <svg id="ring-svg" width="310" height="310" viewBox="0 0 310 310">
+        <defs>
+          <linearGradient id="rg" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#0176D3"/>
+            <stop offset="100%" stop-color="#00A1E0"/>
+          </linearGradient>
+          <radialGradient id="glowRad" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="rgba(1,118,211,.18)"/>
+            <stop offset="100%" stop-color="transparent"/>
+          </radialGradient>
+        </defs>
+        <!-- glow -->
+        <circle cx="155" cy="155" r="148" fill="url(#glowRad)"/>
+        <!-- outer dashed ring -->
+        <circle cx="155" cy="155" r="140" fill="none" stroke="rgba(1,118,211,.12)" stroke-width="1" stroke-dasharray="6 8"/>
+        <!-- inner ring -->
+        <circle cx="155" cy="155" r="108" fill="none" stroke="rgba(0,161,224,.1)" stroke-width="1"/>
+        <!-- animated progress ring -->
+        <circle id="ring-arc" cx="155" cy="155" r="140" fill="none"
+          stroke="url(#rg)" stroke-width="3.5"
+          stroke-dasharray="879.6" stroke-dashoffset="879.6"
+          stroke-linecap="round"
+          transform="rotate(-90 155 155)"/>
+        <!-- corner dots -->
+        <circle cx="155" cy="15"  r="4.5" fill="#00A1E0" opacity=".8"/>
+        <circle cx="295" cy="155" r="4.5" fill="#0176D3" opacity=".8"/>
+        <circle cx="155" cy="295" r="4.5" fill="#00A1E0" opacity=".65"/>
+        <circle cx="15"  cy="155" r="4.5" fill="#0176D3" opacity=".65"/>
+        <!-- large 2 -->
+        <text x="155" y="148" text-anchor="middle"
+          font-family="Inter,sans-serif" font-weight="900" font-size="104"
+          fill="url(#rg)">2</text>
+        <!-- label -->
+        <text x="155" y="192" text-anchor="middle"
+          font-family="Inter,sans-serif" font-weight="500" font-size="15"
+          fill="rgba(255,255,255,.45)" letter-spacing="7">YEARS</text>
+        <text x="155" y="216" text-anchor="middle"
+          font-family="Inter,sans-serif" font-weight="400" font-size="11"
+          fill="rgba(0,161,224,.65)" letter-spacing="2">SALESFORCE EXCELLENCE</text>
+      </svg>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ────────────────────────────────────────────────────
+     SLIDE 2 · BY THE NUMBERS
+──────────────────────────────────────────────────── -->
+<div class="slide" id="s2">
+  <div class="inner">
+    <div class="a1">
+      <div class="eyebrow">Platform Overview</div>
+      <h2 class="h1">2-Year Impact — <span class="accent">By the Numbers</span></h2>
+      <p class="sub">Live production data from Central City Solutions Salesforce org · No estimates</p>
+    </div>
+
+    <div class="g3 a2" style="gap:18px;">
+      <div class="card card-top-blue">
+        <div class="num" data-count="868251" data-fmt="868K">868K</div>
+        <div class="lbl">Automated Activities</div>
+        <div class="desc">1,600 per day — logged automatically, no rep input</div>
+      </div>
+      <div class="card card-top-cloud">
+        <div class="num" data-count="706943" data-fmt="706K">706K</div>
+        <div class="lbl">Call Recordings Synced</div>
+        <div class="desc">RingCentral nightly sync — every call a Salesforce Task</div>
+      </div>
+      <div class="card card-top-sky">
+        <div class="num" data-count="90721" data-fmt="90,721">90,721</div>
+        <div class="lbl">Total Leads Managed</div>
+        <div class="desc">52,020 new leads auto-routed without coordinator touch</div>
+      </div>
+      <div class="card card-top-green">
+        <div class="num" data-count="60699" data-fmt="60,699">60,699</div>
+        <div class="lbl">Buyer Pipeline Records</div>
+        <div class="desc">Auto-classified: Regular · VIP · Ultra VIP</div>
+      </div>
+      <div class="card card-top-amber">
+        <div class="num" data-count="530" data-fmt="530">530</div>
+        <div class="lbl">Property Transactions</div>
+        <div class="desc">23+ automation steps per deal, zero manual handoff</div>
+      </div>
+      <div class="card card-top-violet">
+        <div class="num" data-count="1240" data-fmt="1,240">1,240</div>
+        <div class="lbl">Won Opportunities</div>
+        <div class="desc">Tracked, attributed to source, real-time management view</div>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:22px;" class="a3">
+      <span class="pill p-blue">32 Active Users</span>
+      <span class="pill p-cloud">1,221 Custom Reports</span>
+      <span class="pill p-blue">102 Live Dashboards</span>
+      <span class="pill p-cloud">3,444 Campaigns</span>
+      <span class="pill p-blue">232 Rehab Projects</span>
+      <span class="pill p-green">470 Cases · 98% Closed</span>
+    </div>
+  </div>
+</div>
+
+
+<!-- ────────────────────────────────────────────────────
+     SLIDE 3 · AUTOMATION ENGINE
+──────────────────────────────────────────────────── -->
+<div class="slide" id="s3">
+  <div class="inner">
+    <div class="g12" style="align-items:start; height:auto;">
+
+      <!-- LEFT: hero stat -->
+      <div>
+        <div class="eyebrow a1">Automation Engine</div>
+        <div class="a2" style="font-size:clamp(3.2rem,7vw,6.5rem);font-weight:900;letter-spacing:-.05em;line-height:1;background:linear-gradient(135deg,#fff 0%,var(--cloud) 60%,var(--sky) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;" data-count="868251" data-fmt="868,251">868,251</div>
+        <div class="a2" style="font-size:13px;text-transform:uppercase;letter-spacing:2px;color:var(--muted);margin-top:8px;margin-bottom:26px;">Automated Activities</div>
+        <div class="divider a3"></div>
+        <p class="a3" style="font-size:15.5px;color:var(--muted);line-height:1.75;max-width:360px;">
+          Running at <strong style="color:var(--cloud)">1,600 activities per day</strong>, sustained for 18+ months straight. Every call, follow-up, and update logged without a rep touching Salesforce.
+        </p>
+        <div style="margin-top:28px;display:flex;gap:10px;flex-wrap:wrap;" class="a4">
+          <span class="pill p-cloud" style="font-size:13px;padding:7px 18px;">⚡ 1,600 / day average</span>
+          <span class="pill p-blue"  style="font-size:13px;padding:7px 18px;">📅 18+ months sustained</span>
+        </div>
+      </div>
+
+      <!-- RIGHT: mini chart + stat cards -->
+      <div class="a5">
+        <!-- Simulated activity bar chart -->
+        <div class="card" style="margin-bottom:16px; padding:20px 24px;">
+          <div style="font-size:11px;text-transform:uppercase;letter-spacing:2px;color:var(--muted);margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;">
+            <span>Daily Activity Volume</span>
+            <span class="pill p-cloud" style="font-size:10px;padding:3px 10px;">18 months</span>
+          </div>
+          <div class="bars">
+            <!-- 30 bars with deterministic heights -->
+            <div class="bar" style="height:38%"></div><div class="bar" style="height:45%"></div><div class="bar" style="height:42%"></div>
+            <div class="bar" style="height:55%"></div><div class="bar" style="height:50%"></div><div class="bar" style="height:60%"></div>
+            <div class="bar" style="height:52%"></div><div class="bar" style="height:65%"></div><div class="bar" style="height:58%"></div>
+            <div class="bar" style="height:70%"></div><div class="bar" style="height:68%"></div><div class="bar" style="height:75%"></div>
+            <div class="bar" style="height:72%"></div><div class="bar" style="height:80%"></div><div class="bar" style="height:76%"></div>
+            <div class="bar" style="height:84%"></div><div class="bar" style="height:79%"></div><div class="bar" style="height:88%"></div>
+            <div class="bar" style="height:82%"></div><div class="bar" style="height:91%"></div><div class="bar" style="height:86%"></div>
+            <div class="bar" style="height:93%"></div><div class="bar" style="height:89%"></div><div class="bar" style="height:95%"></div>
+            <div class="bar" style="height:90%"></div><div class="bar" style="height:97%"></div><div class="bar" style="height:92%"></div>
+            <div class="bar" style="height:99%"></div><div class="bar" style="height:95%"></div><div class="bar" style="height:100%"></div>
+          </div>
+          <div class="bar-axis"><span>Jun 2024</span><span>Dec 2024</span><span>Jun 2025</span><span>Dec 2025</span><span>Jun 2026</span></div>
+        </div>
+
+        <div class="g2" style="gap:14px;">
+          <div class="card">
+            <div class="num" style="font-size:2.2rem;" data-count="706943" data-fmt="706K">706K</div>
+            <div class="lbl">Call Logs</div>
+            <div class="desc" style="font-size:12px;">RingCentral auto-synced nightly</div>
+          </div>
+          <div class="card">
+            <div class="num" style="font-size:2.2rem;" data-count="52020" data-fmt="52,020">52K</div>
+            <div class="lbl">New Leads</div>
+            <div class="desc" style="font-size:12px;">Auto-routed, no rep input</div>
+          </div>
+          <div class="card">
+            <div class="num" style="font-size:2.2rem;" data-count="3444" data-fmt="3,444">3,444</div>
+            <div class="lbl">Campaigns</div>
+            <div class="desc" style="font-size:12px;">Full ROI tracked per campaign</div>
+          </div>
+          <div class="card">
+            <div class="num" style="font-size:2.2rem;" data-count="470" data-fmt="470">470</div>
+            <div class="lbl">Support Cases</div>
+            <div class="desc" style="font-size:12px;">98%+ closure rate</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- ────────────────────────────────────────────────────
+     SLIDE 4 · LEAD PIPELINE
+──────────────────────────────────────────────────── -->
+<div class="slide" id="s4">
+  <div class="inner">
+    <div class="a1">
+      <div class="eyebrow">Lead Pipeline</div>
+      <h2 class="h1">52,020 New Leads. <span class="accent">Every One Processed Automatically.</span></h2>
+    </div>
+
+    <div class="flow a2">
+      <div class="fi fi-blue">
+        <div class="fi-icon">📥</div>
+        <div class="fi-num" style="color:var(--sky);" data-count="90721" data-fmt="90,721">90,721</div>
+        <div class="fi-sub">Total Leads</div>
+        <div class="fi-txt">All channels: web, direct mail, cold call, referral</div>
+      </div>
+      <div class="farrow">→</div>
+      <div class="fi fi-cloud">
+        <div class="fi-icon">⚡</div>
+        <div class="fi-num" style="color:var(--cloud);">Smart Route</div>
+        <div class="fi-sub">Assignment Engine</div>
+        <div class="fi-txt">Source, campaign, round-robin, dedup rules</div>
+      </div>
+      <div class="farrow">→</div>
+      <div class="fi">
+        <div class="fi-icon">🔄</div>
+        <div class="fi-num" style="color:var(--sky);" data-count="52020" data-fmt="52,020">52,020</div>
+        <div class="fi-sub">New Processed</div>
+        <div class="fi-txt">Zero manual entry required from reps</div>
+      </div>
+      <div class="farrow">→</div>
+      <div class="fi fi-green">
+        <div class="fi-icon">🏆</div>
+        <div class="fi-num" style="color:#34d399;" data-count="1240" data-fmt="1,240">1,240</div>
+        <div class="fi-sub">Won Opportunities</div>
+        <div class="fi-txt">Full source attribution, every closed deal</div>
+      </div>
+    </div>
+
+    <div class="g3 a3" style="gap:16px;margin-top:24px;">
+      <div class="card card-left-blue">
+        <div style="font-size:14px;font-weight:700;margin-bottom:8px;">→ Smart Routing</div>
+        <p class="desc">Every inbound lead instantly routed by source, campaign, and round-robin rules. Right rep, every time.</p>
+      </div>
+      <div class="card card-left-cloud">
+        <div style="font-size:14px;font-weight:700;margin-bottom:8px;">⊙ Deduplication</div>
+        <p class="desc">Duplicate leads detected and merged automatically — reps never work the same lead twice.</p>
+      </div>
+      <div class="card card-left-blue">
+        <div style="font-size:14px;font-weight:700;margin-bottom:8px;">✕ Dead Lead Cleanup</div>
+        <p class="desc">Stale leads auto-closed with tasks cleaned — pipeline always reflects real workable opportunities.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ────────────────────────────────────────────────────
+     SLIDE 5 · TRANSACTION MANAGEMENT
+──────────────────────────────────────────────────── -->
+<div class="slide" id="s5">
+  <div class="inner">
+    <div class="a1">
+      <div class="eyebrow">Transaction Management</div>
+      <h2 class="h1"><span class="accent">530</span> Property Transactions &nbsp;·&nbsp; <span class="accent">23+</span> Automation Steps Each</h2>
+      <p class="sub">Every deal moves through a fully automated lifecycle — zero coordinator overhead</p>
+    </div>
+
+    <div class="g4 a2" style="gap:18px;">
+      <div class="card">
+        <div style="font-size:2rem;margin-bottom:14px;">✅</div>
+        <div style="font-size:1.4rem;font-weight:800;color:var(--cloud);">Zero</div>
+        <div class="lbl">Manual Handoff</div>
+        <p class="desc">TC tasks auto-created when a transaction hits each stage. No coordinator needed.</p>
+      </div>
+      <div class="card">
+        <div style="font-size:2rem;margin-bottom:14px;">⏰</div>
+        <div style="font-size:1.4rem;font-weight:800;color:var(--sky);">14-Day</div>
+        <div class="lbl">Close Alerts</div>
+        <p class="desc">Dispo team Slack-alerted 14 days before closing. Deals never miss their window.</p>
+      </div>
+      <div class="card">
+        <div style="font-size:2rem;margin-bottom:14px;">✍️</div>
+        <div style="font-size:1.4rem;font-weight:800;color:var(--cloud);">24-Hour</div>
+        <div class="lbl">DocuSign Urgency</div>
+        <p class="desc">Unsigned contracts trigger automated follow-up. Faster signings, faster deal closings.</p>
+      </div>
+      <div class="card">
+        <div style="font-size:2rem;margin-bottom:14px;">🏗️</div>
+        <div class="num" style="font-size:2rem;" data-count="232" data-fmt="232">232</div>
+        <div class="lbl">Rehab Projects</div>
+        <p class="desc">Stage milestones, mobile photo docs, contractor tracking — all in Salesforce.</p>
+      </div>
+    </div>
+
+    <!-- Transaction timeline -->
+    <div class="timeline a3">
+      <div class="ts">
+        <div class="ts-circle" style="background:var(--blue);">1</div>
+        <div class="ts-lbl">New Transaction</div>
+      </div>
+      <div class="ts-line"></div>
+      <div class="ts">
+        <div class="ts-circle" style="background:rgba(1,118,211,.35);border:2px solid var(--blue);">2</div>
+        <div class="ts-lbl">TC Assigned</div>
+      </div>
+      <div class="ts-line"></div>
+      <div class="ts">
+        <div class="ts-circle" style="background:rgba(1,118,211,.35);border:2px solid var(--blue);">3</div>
+        <div class="ts-lbl">Tasks Created</div>
+      </div>
+      <div class="ts-line"></div>
+      <div class="ts">
+        <div class="ts-circle" style="background:rgba(0,161,224,.25);border:2px solid var(--cloud);">4</div>
+        <div class="ts-lbl">Docs Sent</div>
+      </div>
+      <div class="ts-line"></div>
+      <div class="ts">
+        <div class="ts-circle" style="background:rgba(0,161,224,.25);border:2px solid var(--cloud);">5</div>
+        <div class="ts-lbl">14-Day Alert</div>
+      </div>
+      <div class="ts-line"></div>
+      <div class="ts">
+        <div class="ts-circle" style="background:rgba(0,161,224,.25);border:2px solid var(--cloud);">6</div>
+        <div class="ts-lbl">Slack Notify</div>
+      </div>
+      <div class="ts-line"></div>
+      <div class="ts">
+        <div class="ts-circle" style="background:linear-gradient(135deg,var(--blue),var(--cloud));">✓</div>
+        <div class="ts-lbl">Closed &amp; Logged</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ────────────────────────────────────────────────────
+     SLIDE 6 · BUYER INTELLIGENCE
+──────────────────────────────────────────────────── -->
+<div class="slide" id="s6">
+  <div class="inner">
+    <div class="a1">
+      <div class="eyebrow">Buyer Intelligence</div>
+      <h2 class="h1"><span class="accent">60,699</span> Buyers. Zero Manual Classification.</h2>
+      <p class="sub">Automated tiering, campaign attribution, and cost analytics — visible in real time</p>
+    </div>
+
+    <div class="g3 a2" style="gap:18px;">
+      <div class="card card-left-blue">
+        <div style="font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:var(--blue);margin-bottom:12px;">Tier 1</div>
+        <div class="num" style="font-size:2rem;">Regular</div>
+        <div class="lbl">Buyer Tier</div>
+        <p class="desc">Auto-assigned on engagement history and deal count. Zero rep input needed.</p>
+      </div>
+      <div class="card card-left-cloud">
+        <div style="font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:var(--cloud);margin-bottom:12px;">Tier 2</div>
+        <div class="num" style="font-size:2rem;">VIP</div>
+        <div class="lbl">Buyer Tier</div>
+        <p class="desc">Priority routing and elevated outreach. Auto-escalated on repeat deal activity.</p>
+      </div>
+      <div class="card card-left-amber">
+        <div style="font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:#f59e0b;margin-bottom:12px;">Tier 3</div>
+        <div class="num" style="font-size:2rem;">Ultra VIP</div>
+        <div class="lbl">Buyer Tier</div>
+        <p class="desc">Top-tier buyers — dedicated rep assignment, executive dashboard visibility.</p>
+      </div>
+    </div>
+
+    <div class="g3 a3" style="gap:18px;margin-top:18px;">
+      <div class="card">
+        <div style="font-size:13px;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:8px;">
+          <div style="width:7px;height:7px;border-radius:50%;background:var(--cloud);"></div>Marketing ROI — Live
+        </div>
+        <div class="num" style="font-size:2.2rem;" data-count="3444" data-fmt="3,444">3,444</div>
+        <p class="desc">Campaigns tracked real time. Cost-per-lead, cost-per-appointment, cost-per-close visible to management instantly.</p>
+      </div>
+      <div class="card">
+        <div style="font-size:13px;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:8px;">
+          <div style="width:7px;height:7px;border-radius:50%;background:var(--blue);"></div>Campaign Attribution
+        </div>
+        <div class="num" style="font-size:2.2rem;background:linear-gradient(135deg,#fff,var(--sky));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">100%</div>
+        <p class="desc">Every lead tagged to originating campaign. Marketing knows exactly which channels drive closed deals.</p>
+      </div>
+      <div class="card">
+        <div style="font-size:13px;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:8px;">
+          <div style="width:7px;height:7px;border-radius:50%;background:#34d399;"></div>Zapier Eliminated
+        </div>
+        <div class="num" style="font-size:2.2rem;background:linear-gradient(135deg,#fff,#34d399);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">$0</div>
+        <p class="desc">All Zapier automations migrated to native Salesforce. Recurring subscription cost eliminated permanently.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ────────────────────────────────────────────────────
+     SLIDE 7 · INTEGRATIONS
+──────────────────────────────────────────────────── -->
+<div class="slide" id="s7">
+  <div class="inner">
+    <div class="a1">
+      <div class="eyebrow">Ecosystem</div>
+      <h2 class="h1">One Platform. <span class="accent">Five Integrations.</span> Zero Manual Data Entry.</h2>
+      <p class="sub">Every system talks to Salesforce automatically — no manual bridges, no Zapier, no workarounds</p>
+    </div>
+
+    <div class="g5 a2" style="gap:16px;">
+      <div class="int-card">
+        <div class="int-icon">💬</div>
+        <div class="int-name">Slack</div>
+        <div class="int-met">Real-time</div>
+        <div class="int-desc">Leads, missed calls, deal closes, TC reminders — pushed to Slack automatically. Zero manual reporting.</div>
+      </div>
+      <div class="int-card">
+        <div class="int-icon">📞</div>
+        <div class="int-name">RingCentral</div>
+        <div class="int-met">706,943</div>
+        <div class="int-desc">Calls synced nightly. Every recording logged as a Task without reps touching Salesforce.</div>
+      </div>
+      <div class="int-card">
+        <div class="int-icon">📊</div>
+        <div class="int-name">QuickBooks</div>
+        <div class="int-met">4 Entities</div>
+        <div class="int-desc">All CCS business entities synced — accounting works from one single source of truth.</div>
+      </div>
+      <div class="int-card">
+        <div class="int-icon">📁</div>
+        <div class="int-name">Google Drive</div>
+        <div class="int-met">Auto-create</div>
+        <div class="int-desc">Deal folders auto-created per Opportunity with Appointment Recording subfolder. No manual file management.</div>
+      </div>
+      <div class="int-card">
+        <div class="int-icon">📱</div>
+        <div class="int-name">SmrtPhone + DocuSign</div>
+        <div class="int-met">D4D + eSign</div>
+        <div class="int-desc">D4D dialer, SMS logs, and unsigned contract alerts — all tracked in Salesforce automatically.</div>
+      </div>
+    </div>
+
+    <div class="a3" style="margin-top:22px;padding:18px 26px;background:rgba(1,118,211,.09);border:1px solid rgba(1,118,211,.22);border-radius:12px;display:flex;align-items:center;gap:18px;">
+      <div style="font-size:2rem;">⚡</div>
+      <div>
+        <div style="font-size:15px;font-weight:700;">5,900+ rep hours returned to selling</div>
+        <div style="font-size:13px;color:var(--muted);margin-top:4px;">706K calls × 30 sec each = time given back to the team, not spent logging</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ────────────────────────────────────────────────────
+     SLIDE 8 · ANALYTICS
+──────────────────────────────────────────────────── -->
+<div class="slide" id="s8">
+  <div class="inner">
+    <div class="a1">
+      <div class="eyebrow">Reporting &amp; Analytics</div>
+      <h2 class="h1">Real-Time Visibility <span class="accent">Driving Every Decision</span></h2>
+      <p class="sub">Management has the answer before they ask the question</p>
+    </div>
+
+    <div class="g21 a2" style="align-items:start;gap:28px;">
+      <!-- LEFT: stat cards -->
+      <div class="g2" style="gap:16px;">
+        <div class="card" style="background:linear-gradient(135deg,rgba(1,118,211,.16),rgba(1,118,211,.05));">
+          <div class="num" data-count="1221" data-fmt="1,221">1,221</div>
+          <div class="lbl">Custom Reports</div>
+          <div class="desc" style="font-size:12px;">Pipeline, revenue, marketing ROI, per-rep performance, lead funnel by zip code</div>
+        </div>
+        <div class="card" style="background:linear-gradient(135deg,rgba(0,161,224,.16),rgba(0,161,224,.05));">
+          <div class="num" data-count="102" data-fmt="102">102</div>
+          <div class="lbl">Live Dashboards</div>
+          <div class="desc" style="font-size:12px;">TV screens, Slack morning snapshots, management scorecards — all auto-refreshing</div>
+        </div>
+        <div class="card">
+          <div class="num" data-count="3444" data-fmt="3,444">3,444</div>
+          <div class="lbl">Campaigns Tracked</div>
+          <div class="desc" style="font-size:12px;">Full cost-per-lead · per-appt · per-close attribution</div>
+        </div>
+        <div class="card">
+          <div class="num" style="font-size:2rem;color:var(--cloud);">Real-Time</div>
+          <div class="lbl">Acquisition Scorecard</div>
+          <div class="desc" style="font-size:12px;">Per-rep KPIs visible to leadership 24 / 7</div>
+        </div>
+      </div>
+
+      <!-- RIGHT: management view list -->
+      <div class="card a3" style="height:100%;padding:28px;">
+        <div style="font-size:11px;text-transform:uppercase;letter-spacing:2px;color:var(--muted);margin-bottom:20px;">What Management Sees</div>
+        <div style="display:flex;flex-direction:column;gap:15px;">
+          <div style="display:flex;gap:14px;align-items:flex-start;">
+            <span style="font-size:18px;width:28px;flex-shrink:0;">📊</span>
+            <div><div style="font-size:14px;font-weight:600;">Pipeline by Stage</div><div style="font-size:12px;color:var(--muted);margin-top:2px;">Every deal, every rep, every dollar — live</div></div>
+          </div>
+          <div style="display:flex;gap:14px;align-items:flex-start;">
+            <span style="font-size:18px;width:28px;flex-shrink:0;">🎯</span>
+            <div><div style="font-size:14px;font-weight:600;">Marketing ROI</div><div style="font-size:12px;color:var(--muted);margin-top:2px;">Cost-per-lead by campaign, channel, zip code</div></div>
+          </div>
+          <div style="display:flex;gap:14px;align-items:flex-start;">
+            <span style="font-size:18px;width:28px;flex-shrink:0;">👥</span>
+            <div><div style="font-size:14px;font-weight:600;">Rep Performance</div><div style="font-size:12px;color:var(--muted);margin-top:2px;">Appointments, contracts, conversion rates</div></div>
+          </div>
+          <div style="display:flex;gap:14px;align-items:flex-start;">
+            <span style="font-size:18px;width:28px;flex-shrink:0;">🏠</span>
+            <div><div style="font-size:14px;font-weight:600;">Transaction Board</div><div style="font-size:12px;color:var(--muted);margin-top:2px;">530 deals with status, TC, close date</div></div>
+          </div>
+          <div style="display:flex;gap:14px;align-items:flex-start;">
+            <span style="font-size:18px;width:28px;flex-shrink:0;">💰</span>
+            <div><div style="font-size:14px;font-weight:600;">Revenue Forecast</div><div style="font-size:12px;color:var(--muted);margin-top:2px;">Close probability × deal value at a glance</div></div>
+          </div>
+          <div style="display:flex;gap:14px;align-items:flex-start;">
+            <span style="font-size:18px;width:28px;flex-shrink:0;">📱</span>
+            <div><div style="font-size:14px;font-weight:600;">Mobile-Ready</div><div style="font-size:12px;color:var(--muted);margin-top:2px;">Every dashboard accessible from any device</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ────────────────────────────────────────────────────
+     SLIDE 9 · RELIABILITY
+──────────────────────────────────────────────────── -->
+<div class="slide" id="s9">
+  <div class="inner">
+    <div class="a1">
+      <div class="eyebrow">Reliability &amp; Support</div>
+      <h2 class="h1"><span class="accent">98%</span> Closure Rate. <span class="accent">Zero</span> Platform Downtime.</h2>
+      <p class="sub">470 cases. One developer. Two years. No excuses.</p>
+    </div>
+
+    <div class="g2 a2" style="gap:32px;align-items:center;">
+      <!-- Donut + mini stats -->
+      <div style="display:flex;flex-direction:column;align-items:center;gap:24px;">
+        <div id="donut-wrap">
+          <canvas id="donutChart" width="230" height="230"></canvas>
+          <div id="donut-overlay">
+            <div id="d-pct">98%</div>
+            <div id="d-sub">Closure Rate</div>
+          </div>
+        </div>
+        <div class="g2" style="gap:12px;width:100%;">
+          <div class="card" style="text-align:center;padding:16px;">
+            <div style="font-size:1.7rem;font-weight:900;color:var(--cloud);">22%</div>
+            <div style="font-size:10.5px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-top:4px;">Same Day</div>
+          </div>
+          <div class="card" style="text-align:center;padding:16px;">
+            <div style="font-size:1.7rem;font-weight:900;color:var(--sky);">50%</div>
+            <div style="font-size:10.5px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-top:4px;">Within 3 Days</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Story cards -->
+      <div style="display:flex;flex-direction:column;gap:16px;" class="a3">
+        <div class="card card-left-green">
+          <div style="font-size:1.5rem;margin-bottom:8px;">🟢</div>
+          <div style="font-size:15px;font-weight:700;margin-bottom:8px;">Zero Unplanned Downtime</div>
+          <p class="desc">32 users depending on this platform every single day — not one unplanned outage in 18+ months of continuous operation.</p>
+        </div>
+        <div class="card card-left-cloud">
+          <div style="font-size:1.5rem;margin-bottom:8px;">👤</div>
+          <div style="font-size:15px;font-weight:700;margin-bottom:8px;">Single Developer</div>
+          <p class="desc">Every automation, integration, dashboard, and feature in this deck — designed, built, and maintained by one person.</p>
+        </div>
+        <div class="card card-left-sky">
+          <div style="font-size:1.5rem;margin-bottom:8px;">🕒</div>
+          <div style="font-size:15px;font-weight:700;margin-bottom:8px;">2 Years. Zero Missed Deadlines.</div>
+          <p class="desc">One developer. Two years. Zero dropped requests. The platform grew every single quarter without exception.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ────────────────────────────────────────────────────
+     SLIDE 10 · WHAT'S NEXT
+──────────────────────────────────────────────────── -->
+<div class="slide" id="s10">
+  <div class="inner">
+    <div class="a1">
+      <div class="eyebrow">Roadmap</div>
+      <h2 class="h1">Building on the Foundation — <span class="accent">What's Next</span></h2>
+      <p class="sub">Four enhancements in active development. The platform keeps growing.</p>
+    </div>
+
+    <div class="g2 a2" style="gap:18px;">
+      <div class="card" style="padding:30px;background:linear-gradient(135deg,rgba(1,118,211,.14),rgba(1,118,211,.04));">
+        <div style="font-size:2.4rem;margin-bottom:14px;">⚡</div>
+        <div style="font-size:17px;font-weight:800;margin-bottom:12px;">Master Flow Refactor</div>
+        <p class="desc" style="font-size:14px;line-height:1.7;">Single triggered flow per object — all automations consolidated for better performance, easier maintenance, and Salesforce best-practice compliance.</p>
+        <div style="margin-top:18px;"><span class="pill p-blue">Architecture</span></div>
+      </div>
+      <div class="card" style="padding:30px;background:linear-gradient(135deg,rgba(0,161,224,.14),rgba(0,161,224,.04));">
+        <div style="font-size:2.4rem;margin-bottom:14px;">👥</div>
+        <div style="font-size:17px;font-weight:800;margin-bottom:12px;">Team Profiles</div>
+        <p class="desc" style="font-size:14px;line-height:1.7;">Dedicated team-based profiles per department — streamlined permissions, cleaner UX, reduced admin overhead across all roles.</p>
+        <div style="margin-top:18px;"><span class="pill p-cloud">Security</span></div>
+      </div>
+      <div class="card" style="padding:30px;">
+        <div style="font-size:2.4rem;margin-bottom:14px;">📣</div>
+        <div style="font-size:17px;font-weight:800;margin-bottom:12px;">RVM Trigger</div>
+        <p class="desc" style="font-size:14px;line-height:1.7;">Ringless voicemail trigger directly from Lead records — new outreach channel fully integrated and trackable in Salesforce.</p>
+        <div style="margin-top:18px;"><span class="pill p-blue">Automation</span></div>
+      </div>
+      <div class="card" style="padding:30px;">
+        <div style="font-size:2.4rem;margin-bottom:14px;">📊</div>
+        <div style="font-size:17px;font-weight:800;margin-bottom:12px;">Dashboard v2</div>
+        <p class="desc" style="font-size:14px;line-height:1.7;">Leads This Week v2 — deeper insights into lead velocity, source performance, and rep assignment trends with enhanced filtering.</p>
+        <div style="margin-top:18px;"><span class="pill p-cloud">Analytics</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ────────────────────────────────────────────────────
+     SLIDE 11 · CONNECT
+──────────────────────────────────────────────────── -->
+<div class="slide" id="s11">
+  <div class="inner">
+
+    <!-- LEFT -->
+    <div>
+      <div class="eyebrow a1">Let's Connect</div>
+      <div class="a2" style="font-size:clamp(2.4rem,5.5vw,5rem);font-weight:900;letter-spacing:-.045em;line-height:.95;margin-bottom:24px;">
+        <div style="color:var(--white);">Thank</div>
+        <div style="background:linear-gradient(135deg,var(--cloud),var(--sky));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">You.</div>
+      </div>
+      <p class="a3" style="font-size:15.5px;color:var(--muted);line-height:1.75;max-width:420px;margin-bottom:40px;">
+        Two years of building something the team relies on every single day. Looking forward to what year three brings.
+      </p>
+      <div class="a4">
+        <div class="contact-row">
+          <span class="contact-icon">👤</span>
+          <div><div class="contact-main">Amr Magdy</div><div class="contact-sub">Salesforce Consultant &amp; Developer</div></div>
+        </div>
+        <div class="contact-row">
+          <span class="contact-icon">✉️</span>
+          <div><div class="contact-main">amr@goccs.net</div><div class="contact-sub">Central City Solutions</div></div>
+        </div>
+        <div class="contact-row">
+          <span class="contact-icon">📍</span>
+          <div><div class="contact-main">Columbus &amp; Cincinnati, OH</div><div class="contact-sub">June 2024 – June 2026</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: orbital SVG -->
+    <div class="a5" style="display:flex;flex-direction:column;align-items:center;justify-content:center;">
+      <svg viewBox="0 0 420 420" width="380" height="380">
+        <defs>
+          <radialGradient id="glow2" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="rgba(1,118,211,.25)"/>
+            <stop offset="100%" stop-color="transparent"/>
+          </radialGradient>
+          <linearGradient id="rg2" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#0176D3"/>
+            <stop offset="100%" stop-color="#00A1E0"/>
+          </linearGradient>
+        </defs>
+        <circle cx="210" cy="210" r="195" fill="url(#glow2)"/>
+        <circle cx="210" cy="210" r="165" fill="none" stroke="rgba(1,118,211,.18)" stroke-width="1"/>
+        <circle cx="210" cy="210" r="110" fill="none" stroke="rgba(0,161,224,.12)" stroke-width="1" stroke-dasharray="5 9"/>
+        <circle cx="210" cy="210" r="60"  fill="rgba(1,118,211,.08)" stroke="rgba(1,118,211,.2)" stroke-width="1"/>
+        <!-- Big 2 -->
+        <text x="210" y="235" text-anchor="middle" font-family="Inter,sans-serif" font-weight="900" font-size="80" fill="url(#rg2)">2</text>
+        <!-- Orbital dots with labels -->
+        <circle cx="210" cy="45"  r="5" fill="#00A1E0"/>
+        <text x="210" y="30" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" fill="rgba(0,161,224,.75)">2026</text>
+        <circle cx="375" cy="210" r="5" fill="#0176D3"/>
+        <text x="396" y="214" font-family="Inter,sans-serif" font-size="11" fill="rgba(1,118,211,.75)">CCS</text>
+        <circle cx="210" cy="375" r="5" fill="#00A1E0"/>
+        <text x="210" y="396" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" fill="rgba(0,161,224,.6)">Production</text>
+        <circle cx="45"  cy="210" r="5" fill="#0176D3"/>
+        <text x="5"  y="214" font-family="Inter,sans-serif" font-size="11" fill="rgba(1,118,211,.6)">SF</text>
+        <!-- Animated orbit ring -->
+        <circle cx="210" cy="210" r="165" fill="none"
+          stroke="url(#rg2)" stroke-width="2"
+          stroke-dasharray="1038" stroke-dashoffset="1038"
+          stroke-linecap="round"
+          transform="rotate(-90 210 210)">
+          <animate attributeName="stroke-dashoffset" from="1038" to="0" dur="2.5s" begin="0.3s" fill="freeze" calcMode="spline" keySplines="0.4 0 0.2 1"/>
+        </circle>
+      </svg>
+      <div style="text-align:center;margin-top:-16px;">
+        <div style="font-size:13px;color:var(--muted);">Salesforce Org · Production · Central City Solutions</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+</div><!-- /deck -->
+
+
+<!-- NAVIGATION -->
+<div id="nav">
+  <button class="nbtn" onclick="go(-1)">←</button>
+  <div id="dots"></div>
+  <div id="sc">1 / 11</div>
+  <button class="nbtn" onclick="go(1)">→</button>
+</div>
+
+
+<!-- Chart.js CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+
+<script>
+// ═══════════════════════════════════════════════════════
+//  SLIDE ENGINE
+// ═══════════════════════════════════════════════════════
+const TOTAL = 11;
+let cur = 0;
+let donutReady = false;
+let ringAnimated = false;
+
+const slides = Array.from(document.querySelectorAll('.slide'));
+const dotsEl = document.getElementById('dots');
+const scEl   = document.getElementById('sc');
+const progEl = document.getElementById('progress');
+
+// Build dots
+for (let i = 0; i < TOTAL; i++) {
+  const d = document.createElement('div');
+  d.className = 'dot' + (i === 0 ? ' on' : '');
+  d.onclick = () => goTo(i);
+  dotsEl.appendChild(d);
+}
+
+function updateUI() {
+  scEl.textContent = (cur + 1) + ' / ' + TOTAL;
+  progEl.style.width = ((cur + 1) / TOTAL * 100) + '%';
+  dotsEl.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('on', i === cur));
+}
+
+function goTo(n) {
+  if (n === cur) return;
+  const prev = slides[cur];
+  prev.classList.remove('active');
+  prev.classList.add('leaving');
+  setTimeout(() => prev.classList.remove('leaving'), 700);
+
+  cur = Math.max(0, Math.min(TOTAL - 1, n));
+  slides[cur].classList.add('active');
+  updateUI();
+
+  // Trigger counters on this slide
+  triggerCounters(slides[cur]);
+
+  // Donut chart on slide 9
+  if (cur === 8 && !donutReady) { buildDonut(); donutReady = true; }
+
+  // Cover ring animation on re-visit
+  if (cur === 0 && !ringAnimated) { animateRing(); ringAnimated = true; }
+}
+
+function go(d) { goTo(cur + d); }
+
+// Keyboard
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') go(1);
+  if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp') go(-1);
+});
+
+// Touch swipe
+let tx = 0;
+document.addEventListener('touchstart', e => { tx = e.touches[0].clientX; }, {passive:true});
+document.addEventListener('touchend',   e => {
+  const dx = tx - e.changedTouches[0].clientX;
+  if (Math.abs(dx) > 50) go(dx > 0 ? 1 : -1);
+}, {passive:true});
+
+// ═══════════════════════════════════════════════════════
+//  COUNTER ANIMATION
+// ═══════════════════════════════════════════════════════
+function easeOutExpo(t) { return t === 1 ? 1 : 1 - Math.pow(2, -10 * t); }
+
+function animateCounter(el) {
+  const target = parseInt(el.dataset.count, 10);
+  const fmt    = el.dataset.fmt || String(target);
+  const dur    = 1400;
+  const start  = performance.now();
+
+  // Decide format function
+  let format;
+  if (fmt.endsWith('K')) {
+    format = v => Math.round(v / 1000) + 'K';
+  } else {
+    // Use commas
+    format = v => Math.round(v).toLocaleString();
+  }
+
+  function tick(now) {
+    const elapsed = now - start;
+    const progress = Math.min(elapsed / dur, 1);
+    const eased = easeOutExpo(progress);
+    el.textContent = format(eased * target);
+    if (progress < 1) requestAnimationFrame(tick);
+    else el.textContent = fmt; // snap to exact formatted string
+  }
+
+  requestAnimationFrame(tick);
+}
+
+const triggered = new Set();
+
+function triggerCounters(slide) {
+  if (triggered.has(slide)) return;
+  triggered.add(slide);
+  slide.querySelectorAll('[data-count]').forEach(el => {
+    setTimeout(() => animateCounter(el), 300);
+  });
+}
+
+// Trigger on first slide immediately
+triggerCounters(slides[0]);
+
+// ═══════════════════════════════════════════════════════
+//  COVER RING ANIMATION (SVG stroke-dashoffset)
+// ═══════════════════════════════════════════════════════
+function animateRing() {
+  const arc = document.getElementById('ring-arc');
+  if (!arc) return;
+  const circumference = 879.6;
+  const dur = 2000;
+  const start = performance.now();
+
+  function tick(now) {
+    const t = Math.min((now - start) / dur, 1);
+    const ease = easeOutExpo(t);
+    arc.setAttribute('stroke-dashoffset', circumference * (1 - ease));
+    if (t < 1) requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+}
+
+// Animate ring on load
+setTimeout(animateRing, 600);
+
+// ═══════════════════════════════════════════════════════
+//  DONUT CHART (Slide 9)
+// ═══════════════════════════════════════════════════════
+function buildDonut() {
+  const ctx = document.getElementById('donutChart');
+  if (!ctx) return;
+
+  new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      datasets: [{
+        data: [98, 2],
+        backgroundColor: ['rgba(1,118,211,0)', 'rgba(255,255,255,0)'], // hidden, we paint with gradient
+        borderWidth: 0,
+      }]
+    },
+    options: { cutout: '76%', plugins: { legend: { display: false }, tooltip: { enabled: false } }, animation: false }
+  });
+
+  // Custom canvas drawing for gradient arc
+  const canvas = ctx;
+  const c = canvas.getContext('2d');
+  const cx = canvas.width / 2, cy = canvas.height / 2;
+  const r = 88, lineW = 13;
+
+  // Background ring
+  c.clearRect(0, 0, canvas.width, canvas.height);
+  c.beginPath();
+  c.arc(cx, cy, r, 0, Math.PI * 2);
+  c.strokeStyle = 'rgba(255,255,255,0.07)';
+  c.lineWidth = lineW;
+  c.stroke();
+
+  // Gradient arc — animate
+  const startAngle = -Math.PI / 2;
+  const targetAngle = startAngle + (2 * Math.PI * 0.98);
+  const dur = 1600;
+  const start = performance.now();
+
+  function drawArc(now) {
+    const t = Math.min((now - start) / dur, 1);
+    const ease = easeOutExpo(t);
+    const endAngle = startAngle + (targetAngle - startAngle) * ease;
+
+    c.clearRect(0, 0, canvas.width, canvas.height);
+
+    // BG ring
+    c.beginPath();
+    c.arc(cx, cy, r, 0, Math.PI * 2);
+    c.strokeStyle = 'rgba(255,255,255,0.07)';
+    c.lineWidth = lineW;
+    c.stroke();
+
+    // Gradient arc
+    const grad = c.createLinearGradient(cx - r, cy, cx + r, cy);
+    grad.addColorStop(0, '#0176D3');
+    grad.addColorStop(1, '#00A1E0');
+
+    c.beginPath();
+    c.arc(cx, cy, r, startAngle, endAngle);
+    c.strokeStyle = grad;
+    c.lineWidth = lineW;
+    c.lineCap = 'round';
+    c.stroke();
+
+    // Glow end cap
+    const endX = cx + r * Math.cos(endAngle);
+    const endY = cy + r * Math.sin(endAngle);
+    c.beginPath();
+    c.arc(endX, endY, lineW / 2 - 1, 0, Math.PI * 2);
+    c.fillStyle = '#00A1E0';
+    c.fill();
+
+    if (t < 1) requestAnimationFrame(drawArc);
+  }
+
+  requestAnimationFrame(drawArc);
+}
+
+// Init progress
+updateUI();
+</script>
+</body>
+</html>
